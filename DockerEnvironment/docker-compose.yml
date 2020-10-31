@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  tes_webapp:
+    build: ./webapp
+    volumes:
+      - ./../:/var/www/html
+    ports:
+      - 4000:80
+
+  tes_dbserver:
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: database
+    ports:
+      - 4500:3306
+
+  tes_dbadmin:
+    image: phpmyadmin:5-apache
+    restart: always
+    environment:
+      PMA_HOST: dbserver
+    ports:
+      - 4600:80
